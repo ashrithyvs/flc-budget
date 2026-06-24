@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "FLC Budget Tracker — full-stack (React + Express + SQLite)",
-  "engines": { "node": ">=18" },
+  "engines": { "node": "20.x" },
   "scripts": {
     "build": "npm --prefix client install --include=dev && npm --prefix client run build && npm --prefix server install --omit=dev",
     "start": "npm --prefix server start",
