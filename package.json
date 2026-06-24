@@ -5,7 +5,7 @@
   "description": "FLC Budget Tracker — full-stack (React + Express + SQLite)",
   "engines": { "node": ">=18" },
   "scripts": {
-    "build": "npm --prefix client install && npm --prefix client run build && npm --prefix server install",
+    "build": "npm --prefix client install --include=dev && npm --prefix client run build && npm --prefix server install --omit=dev",
     "start": "npm --prefix server start",
     "dev:server": "npm --prefix server start",
     "dev:client": "npm --prefix client run dev"
