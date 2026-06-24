@@ -15,6 +15,9 @@ app.use(express.json({ limit: '2mb' }))
 
 seedIfEmpty()
 
+// Health check for Render (no auth).
+app.get('/api/health', (_req, res) => res.json({ ok: true }))
+
 // ---- helpers ----
 const all = (sql, ...p) => db.prepare(sql).all(...p)
 const get = (sql, ...p) => db.prepare(sql).get(...p)
@@ -282,12 +285,16 @@ app.get('/api/unbudgeted', (req, res) => res.json(all('SELECT * FROM unbudgeted 
 // ===================== Admin: reset =====================
 app.post('/api/reset', adminOnly, (req, res) => { seedIfEmpty({ force: true }); logAudit(req, 'reset', 'system', '', 'Reset all data to the seed set'); res.json({ ok: true }) })
 
-// ---- Serve the built frontend in production ----
+// ---- Serve the built React app from the same origin in production ----
 const clientDist = join(__dirname, '..', 'client', 'dist')
 if (fs.existsSync(clientDist)) {
   app.use(express.static(clientDist))
-  app.get('*', (req, res) => res.sendFile(join(clientDist, 'index.html')))
+  app.get('*', (req, res) => {
+    if (req.path.startsWith('/api')) return res.status(404).json({ error: 'Not found' })
+    res.sendFile(join(clientDist, 'index.html'))
+  })
 }
 
 const PORT = process.env.PORT || 4000
-app.listen(PORT, () => console.log(`FLC Budget API listening on http://localhost:${PORT}`))
+const HOST = process.env.HOST || '0.0.0.0'
+app.listen(PORT, HOST, () => console.log(`FLC Budget listening on http://${HOST}:${PORT}`))

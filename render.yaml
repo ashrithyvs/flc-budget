@@ -1,0 +1,21 @@
+# Render Blueprint — single full-stack web service (React + Express + SQLite).
+# Dashboard: New → Blueprint → connect this repo, or New → Web Service with these settings.
+services:
+  - type: web
+    name: flc-budget
+    runtime: node
+    plan: starter
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /data/flcbudget.db
+    disk:
+      name: flc-budget-data
+      mountPath: /data
+      sizeGB: 1
