@@ -1,10 +1,10 @@
-# Render Blueprint — single full-stack web service (React + Express + SQLite).
-# Dashboard: New → Blueprint → connect this repo, or New → Web Service with these settings.
+# Reference config — deploy via Dashboard → New → Web Service (free tier).
+# Blueprint is optional; copy these settings into the Web Service form.
 services:
   - type: web
     name: flc-budget
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm run build
     startCommand: npm start
     healthCheckPath: /api/health
@@ -13,9 +13,5 @@ services:
         value: production
       - key: JWT_SECRET
         generateValue: true
-      - key: DB_PATH
-        value: /data/flcbudget.db
-    disk:
-      name: flc-budget-data
-      mountPath: /data
-      sizeGB: 1
+    # No persistent disk on free tier — SQLite lives in server/flcbudget.db
+    # and resets when the instance is redeployed or restarted.
