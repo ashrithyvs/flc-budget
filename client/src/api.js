@@ -1,7 +1,7 @@
 // Thin REST client with bearer-token auth.
 // In dev, Vite proxies /api to the Express server (see vite.config.js).
 // In production, Express serves both the API and this app from the same origin.
-const BASE = import.meta.env.VITE_API_BASE || ''
+const BASE = import.meta.env.FLC_API_URL || ''
 const TOKEN_KEY = 'flcbudget.token'
 
 export const tokenStore = {
